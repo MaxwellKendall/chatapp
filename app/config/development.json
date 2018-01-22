@@ -1,0 +1,4 @@
+{
+  "host": "http://localhost:3000",
+  "dbURI": "mongodb://admin:test12345@@ds111638.mlab.com:11638/chatapp5490"
+}

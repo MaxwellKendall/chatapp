@@ -23,6 +23,8 @@ let route = routes => {
   return router;
 }
 
+const connect = 'mongodb://admin:test12345@@ds111638.mlab.com:11638/chatapp5490'
+
 module.exports = {
   route
 }
