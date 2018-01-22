@@ -2,16 +2,14 @@
 const express = require('express');
 const app = express();
 app.set('port', process.env.PORT || 3000);
-
-let helloMiddleware = (req, res, next) => {
-  req.hello = `Hello! ITs me! I was wondering .... you get the idea!`;
-  next();
-}
-
-app.use(helloMiddleware);
-
+app.set('view engine', 'ejs');
+app.set('views', './views'); // sets where ejs should look for views, by default is views
 app.get('/', (req, res, next) => {
-  res.send('<h1>Hello Express!</h1>');
+  // res.sendFile(`${__dirname}/views/login.htm`);
+  res.render('login', {
+    pageTitle: 'My Login Page',
+  }); // uses ejs render method
+  console.log(req.hello);
 });
 
 app.get('/dashboard', (req, res, next) => {
