@@ -3,12 +3,13 @@ const express = require('express');
 const app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
-app.set('views', './views'); // sets where ejs should look for views, by default is views
+
+app.use(express.static('public')); // built in middleware function to handle static assets.
+
 app.get('/', (req, res, next) => {
-  // res.sendFile(`${__dirname}/views/login.htm`);
   res.render('login', {
     pageTitle: 'My Login Page',
-  }); // uses ejs render method
+  });
   console.log(req.hello);
 });
 
