@@ -62,9 +62,18 @@ let createNewUser = profile => {
   });
 }
 
+let isAuthenticated = (req, res, next) => {
+  if (req.user){
+    next();
+  } else {
+    res.redirect('/');
+  }
+}
+
 module.exports = {
   route,
   findOne,
   createNewUser,
   findById,
+  isAuthenticated,
 }

@@ -8,12 +8,12 @@ module.exports = () => {
       '/': (req, res, next) => {
         res.render('login', { pageTitle: 'test'});
       },
-      '/rooms': (req, res, next) => {
+      '/rooms': [h.isAuthenticated, (req, res, next) => {
         res.render('rooms');
-      },
-      '/chat': (req, res, next) => {
+      }],
+      '/chat': [h.isAuthenticated, (req, res, next) => {
         res.render('chatroom');
-      },
+      }],
       '/getsession': (req, res, next) => {
         res.send(`My favourite color: ${req.session.favColor}`);
       },
