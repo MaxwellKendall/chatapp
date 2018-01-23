@@ -1,5 +1,6 @@
 'use strict';
 const router = require('express').Router();
+const db = require('../db');
 
 let _registerRoutes = (routes, method) => {
   for (let key in routes) {
@@ -18,13 +19,52 @@ let _registerRoutes = (routes, method) => {
   }
 }
 
+let findById = id => {
+  return new Promise((resolve, reject) => {
+    db.userModel.findById(id, (error, user) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(user);
+      }
+    });
+  });
+}
+
 let route = routes => {
   _registerRoutes(routes);
   return router;
 }
 
-const connect = 'mongodb://admin:test12345@@ds111638.mlab.com:11638/chatapp5490'
+// find a single user based on a key 
+let findOne = profileId => {
+  return db.userModel.findOne({
+    'profileId': profileId,
+  })
+}
+
+// create a new user
+let createNewUser = profile => {
+  return new Promise((resolve, reject) => {
+    let newChatUser = new db.userModel({
+      profileId: profile.id,
+      fullName: profile.displayName,
+      profilePic: profile.photos[0].value || '',
+    });
+
+    newChatUser.save(error => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(newChatUser);
+      }
+    })
+  });
+}
 
 module.exports = {
-  route
+  route,
+  findOne,
+  createNewUser,
+  findById,
 }

@@ -1,5 +1,17 @@
 {
   "host": "http://localhost:3000",
   "dbURI": "mongodb://admin:test123@ds111638.mlab.com:11638/chatapp5490",
-  "sessionSecret": "USAUSAUSA"
+  "sessionSecret": "USAUSAUSA",
+  "fb": {
+    "clientID": "400144553732643",
+    "clientSecret": "662163d7151e7b2cc54c6bb608bb05fe",
+    "callbackURL": "//localhost:3000/auth/facebook/callback",
+    "profileFields": ["id", "displayName", "photos"]
+  },
+  "fbtest": {
+    "clientID": "1900496806947045",
+    "clientSecret": "d7f546ee69b4f35b2878d0b6193f5a04",
+    "callbackURL": "//localhost:3000/auth/facebook/callback",
+    "profileFields": ["id", "displayName", "photos"]
+  }
 }
