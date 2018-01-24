@@ -21,6 +21,6 @@ app.get('/dashboard', (req, res, next) => {
   res.send(`<h1>This is the dashboard page Middleware says: ${req.hello}</h1>`);
 });
 
-app.listen(app.get('port'), () => {
+chatApp.ioServer(app).listen(app.get('port'), () => {
   console.log('chat app running on port: ', app.get('port'));
 });

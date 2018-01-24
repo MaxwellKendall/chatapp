@@ -19,6 +19,5 @@ if (process.env.NODE_ENV === 'production') {
     secret: config.sessionSecret,
     resave: false,
     saveUninitialized: true,
-
   })
 }

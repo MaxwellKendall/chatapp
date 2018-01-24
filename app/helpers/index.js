@@ -1,6 +1,7 @@
 'use strict';
 const router = require('express').Router();
 const db = require('../db');
+const crypto = require('crypto');
 
 let _registerRoutes = (routes, method) => {
   for (let key in routes) {
@@ -70,10 +71,38 @@ let isAuthenticated = (req, res, next) => {
   }
 }
 
+const doesNewRoomExist =(allrooms, room) => {
+  let findRoom = allrooms.findIndex((el, index, array) => {
+    if (el.room === room) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  return findRoom > -1 ? true : false;
+}
+
+const generateId = () => {
+  return crypto.randomBytes(24).toString('hex');
+}
+
+const findRoomById = (allrooms, id) => {
+  return allrooms.find((el) => {
+    if (el.roomID === id) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+}
+
 module.exports = {
   route,
   findOne,
   createNewUser,
   findById,
   isAuthenticated,
+  doesNewRoomExist,
+  generateId,
+  findRoomById,
 }

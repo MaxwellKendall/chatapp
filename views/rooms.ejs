@@ -5,27 +5,56 @@
 	<title>ChatCat - Rooms</title>
 	<link rel="stylesheet" href="/css/roomsStyles.css">
 	<script src="/js/jquery-2.1.4.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		'use strict';
+		$(() => {
+			let socket = io('<%= host %>' + '/roomslist');
+
+			socket.on('connect', () => {
+				console.log('connected to the server!');
+				console.log('user', <% user %>);
+			});
+
+			const newRoom = $('#newRoom');
+			const createNewRoom = $('#createBtn');
+			createNewRoom.on('click', () => {
+				if (newRoom.val() !== '') {
+					socket.emit('newRoom', newRoom.val());
+				}
+			})
+
+			let renderChatRooms = (chatRooms) => {
+				let roomsListDiv = $('#roomsListUL');
+				let listStr = '';
+				for (let room of chatRooms) {
+					listStr += `<a href='/chat/${room.roomID}'><li>${room.room}</li></a>`;
+				}
+				roomsListDiv.html('').append(listStr);
+			}
+			socket.emit('getChatRooms');
+			socket.on('chatRoomsList', (chatRooms) => {
+				renderChatRooms(JSON.parse(chatRooms));
+			})
+		})
+	</script>
 </head>
 <body>
 	<div class="container">
 		<div class="titlePanel">
-			<h1>ChatCAT | Select or Create a Chatroom</h1>
+			<h1>chatApp | Select or Create a Chatroom</h1>
 		</div>
 		<div class="controls">
-			<div class="userPicHolder"><img src="./img/user.jpg" alt="John Doe"></div>
-			<p class="userName">John Doe</p>
+			<div class="userPicHolder"><img src="<%= user.profilePic %>" alt="<%= user.displayName %>"></div>
+			<p class="userName"><%= user.fullName %></p>
 			<a href="/logout" id="logOutBtn">Logout</a>
 		</div>
 		<div class="controls">
-			<input type="text" name="roomName" placeholder="Create a new Chatroom">
+			<input type="text" id="newRoom" name="roomName" placeholder="Create a new Chatroom">
 			<a href="#" id="createBtn">Create</a>
 		</div>
 		<div class="roomsListDiv">
 			<ul class="roomsList" id="roomsListUL">
-			<!-- Loop list items here -->
-				<a href="chatroom.htm"><li>World Cuisine</li></a>
-				<a href="chatroom.htm"><li>Coffee and Conversations</li></a>
-			<!-- Loop ends -->
 			</ul>
 		</div>
 	</div>

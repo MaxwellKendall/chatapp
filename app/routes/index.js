@@ -1,6 +1,7 @@
 'use strict';
 const h = require('../helpers');
 const passport = require('passport');
+const config = require('../config');
 
 module.exports = () => {
   let routes = {
@@ -9,10 +10,26 @@ module.exports = () => {
         res.render('login', { pageTitle: 'test'});
       },
       '/rooms': [h.isAuthenticated, (req, res, next) => {
-        res.render('rooms');
+        res.render('rooms', {
+          user: req.user,
+          host: config.host,
+        });
       }],
       '/chat': [h.isAuthenticated, (req, res, next) => {
         res.render('chatroom');
+      }],
+      '/chat/:id': [h.isAuthenticated, (req, res, next) => {
+        let getRoom = h.findRoomById(req.app.locals.chatrooms, req.params.id);
+        if (!getRoom) {
+          return next();
+        } else {
+          res.render('chatroom', {
+            user: req.user,
+            host: config.host,
+            room: getRoom.room,
+            roomID: getRoom.roomID,
+          });
+        }
       }],
       '/getsession': (req, res, next) => {
         res.send(`My favourite color: ${req.session.favColor}`);
